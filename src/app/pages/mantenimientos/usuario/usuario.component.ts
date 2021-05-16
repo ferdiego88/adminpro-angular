@@ -7,6 +7,7 @@ import { UsuarioService } from '../../../services/usuario.service';
 import { Usuario } from '../../../models/usuario.model';
 import { delay } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { Hospital } from '../../../models/hospital.model';
 
 @Component({
   selector: 'app-usuario',
@@ -25,19 +26,21 @@ export class UsuarioComponent implements OnInit, OnDestroy {
               private busquedaService: BusquedasService,
               private modalImagenService: ModalImagenService) { }
 
-  ngOnDestroy(): void {
-    this.imgSubs.unsubscribe();
-  }
+
 
   ngOnInit(): void {
     this.cargarUsuarios();
-    this.imgSubs = this.modalImagenService.nuevaImagen
+    this.imgSubs = this.imgSubs = this.modalImagenService.nuevaImagen
     .pipe(delay(100))
     .subscribe
       ((img: any) => {
         console.log(img);
         this.cargarUsuarios();
         } );
+  }
+
+  ngOnDestroy(): void {
+    this.imgSubs.unsubscribe();
   }
 
 
@@ -73,9 +76,9 @@ export class UsuarioComponent implements OnInit, OnDestroy {
       return;
     }
     this.busquedaService.buscar('usuarios', termino)
-      .subscribe(resultado => {
+      .subscribe((resultado: any) => {
       //  console.log(resultado);
-       this.usuarios = resultado;
+        this.usuarios = resultado;
       });
   }
 

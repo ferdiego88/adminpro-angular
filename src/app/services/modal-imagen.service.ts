@@ -14,11 +14,11 @@ export class ModalImagenService {
  public nuevaImagen: EventEmitter<string> = new EventEmitter<string>();
   constructor() { }
 
-  get ocultarModal (){
+  get ocultarModal(): boolean{
     return this._ocultarModal;
   }
 
-  abrilModal (tipo: 'usuarios' | 'medicos' | 'hospitales', id?: string, img = 'no-image'){
+  abrilModal(tipo: 'usuarios' | 'medicos' | 'hospitales', id?: string, img = 'no-image'): void{
     this._ocultarModal = false;
     this.tipo = tipo;
     this.id = id;
@@ -32,7 +32,7 @@ export class ModalImagenService {
   }
 
 
-  cerrarModal (){
+  cerrarModal(): boolean{
     return this._ocultarModal = true;
   }
 }

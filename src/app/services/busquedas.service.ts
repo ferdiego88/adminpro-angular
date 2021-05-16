@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {map} from 'rxjs/operators';
 import { Usuario } from '../models/usuario.model';
+import { Hospital } from '../models/hospital.model';
+import { Medico } from '../models/medico.model';
 const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root'
@@ -28,7 +30,26 @@ export class BusquedasService {
         (user: any) => new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid)
     );
   }
-  buscar(tipo: 'usuarios' | 'medicos' | 'hospitales', termino: string){
+  private transformarHospitales(resultado: any): Hospital[] {
+    return resultado.map(
+        (hospital: any) => new Hospital(
+          hospital.nombre,
+          hospital._id,
+          hospital.img,
+          hospital._HospitalUser)
+    );
+  }
+  private transformarMedicos(resultado: any): Medico[] {
+    return resultado.map(
+        (medico: any) => new Medico(
+          medico.nombre,
+          medico._id,
+          medico.img,
+          medico.usuario,
+          medico.hospital)
+    );
+  }
+    buscar(tipo: 'usuarios' | 'medicos' | 'hospitales', termino: string){
 
     // http://localhost:3000/api/todo/coleccion/usuarios/ferna
     const url = `${base_url}/todo/coleccion/${tipo}/${termino}`;
@@ -38,8 +59,10 @@ export class BusquedasService {
           switch (tipo) {
             case 'usuarios':
               return this.transformarUsuarios(resp.resultado);
-              break;
-
+            case 'hospitales':
+              return this.transformarHospitales(resp.resultado);
+            case 'medicos':
+              return this.transformarMedicos(resp.resultado);
             default:
               return [];
           }
