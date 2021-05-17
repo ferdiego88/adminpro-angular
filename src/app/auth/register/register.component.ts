@@ -42,6 +42,7 @@ export class RegisterComponent {
           // console.log(resp);
           this.router.navigateByUrl('/');
         }, (err) => {
+          console.log(err);
           // Si sucede un Error
           Swal.fire('Error', err.error.msg, 'error');
         });
